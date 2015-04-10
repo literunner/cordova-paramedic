@@ -133,6 +133,7 @@ function addAndRunPlatform() {
         setConfigStartPage();
         console.log("cordova-paramedic :: adding platform");
         shell.exec('cordova platform add ' + platformId,{silent:true});
+        console.log("cordova-paramedic :: prepare platform");
         shell.exec('cordova prepare',{silent:true});
         // limit runtime to TIMEOUT msecs
         setTimeout(function(){
@@ -140,9 +141,11 @@ function addAndRunPlatform() {
             cleanUpAndExitWithCode(1);
         },(TIMEOUT));
 
+        console.log("cordova emulate");
         shell.exec('cordova emulate ' + platformId.split("@")[0] + " --phone",
             {async:true,silent:true},
             function(code,output){
+                console.log("emulate finished code: " + code + "output: " + output);
                 if(code !== 0) {
                     console.error("Error: cordova emulate return error code " + code);
                     console.log("output: " + output);
